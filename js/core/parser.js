@@ -44,7 +44,7 @@
 
     function sheetToTable(sheet, meta) {
       var aoa = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: false, defval: null });
-      return Promise.resolve(aoaToTable(aoa, meta));
+      return Promise.resolve(gridToTable(aoa, sheet["!merges"] || [], meta));
     }
 
     function detectDelimiter(text) {
@@ -93,7 +93,7 @@
         row.push(field);
         rows.push(row);
       }
-      return aoaToTable(rows, meta);
+      return gridToTable(rows, [], meta);
     }
 
     function jsonToTable(data, meta) {
@@ -114,21 +114,44 @@
       };
     }
 
-    function aoaToTable(aoa, meta) {
-      if (!aoa || !aoa.length) throw new Error("No rows found");
-      var headers = dedupeHeaders((aoa[0] || []).map(function (h, i) {
+    function gridToTable(grid, merges, meta) {
+      if (!grid || !grid.length) throw new Error("No rows found");
+      var detect = App.HeaderDetect.analyze(grid, merges);
+      return composeTable(grid, merges, detect, meta);
+    }
+
+    function composeTable(grid, merges, detect, meta) {
+      var built = App.HeaderDetect.build(grid, { headerStart: detect.headerStart, headerRows: detect.headerRows, merges: merges });
+      var headers = dedupeHeaders(built.headers.map(function (h, i) {
         var name = String(h == null ? "" : h).trim();
         return name || "Column " + (i + 1);
       }));
-      var rows = aoa.slice(1).map(function (row) {
+      var rows = built.rows.map(function (row) {
         return headers.map(function (_, i) {
           var value = row ? row[i] : null;
           return value == null || value === "" ? null : String(value);
         });
       });
-      return { headers: headers, rows: rows, meta: Object.assign({ sourceName: "", sheetName: "", totalRows: rows.length }, meta || {}) };
+      return {
+        headers: headers,
+        rows: rows,
+        meta: Object.assign({ sourceName: "", sheetName: "", totalRows: rows.length }, meta || {}),
+        raw: { grid: grid, merges: merges, detect: detect }
+      };
     }
 
-    return { parseToTable: parseToTable, parseFile: parseFile, parseCSV: csvToTable, detectDelimiter: detectDelimiter };
+    /* re-compose a parsed table with user-adjusted header position */
+    function rebuild(parsed, headerStart, headerRows) {
+      var raw = parsed.raw;
+      var detect = {
+        headerStart: headerStart,
+        headerRows: headerRows,
+        confidence: raw.detect.confidence
+      };
+      var meta = { sourceName: parsed.meta.sourceName, sheetName: parsed.meta.sheetName };
+      return composeTable(raw.grid, raw.merges, detect, meta);
+    }
+
+    return { parseToTable: parseToTable, parseFile: parseFile, parseCSV: csvToTable, detectDelimiter: detectDelimiter, rebuild: rebuild };
   })();
 

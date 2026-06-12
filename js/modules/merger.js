@@ -14,7 +14,12 @@
         tables = tables.slice(0, 30);
       }
       container.querySelector("#merge-files").innerHTML = tables.map(function (table, i) {
-        return '<li class="file-item"><span>' + App.UI.escapeHtml(describeTable(table)) + '</span><button class="btn small" data-remove="' + i + '">' + t("remove") + '</button></li>';
+        var detect = table.raw && table.raw.detect;
+        var badge = "";
+        if (detect && (detect.headerStart > 0 || detect.headerRows > 1)) {
+          badge = ' <span class="badge warning">' + App.UI.escapeHtml(t("hd_badge").replace("{skip}", detect.headerStart).replace("{rows}", detect.headerRows)) + '</span>';
+        }
+        return '<li class="file-item"><span>' + App.UI.escapeHtml(describeTable(table)) + badge + '</span><button class="btn small" data-remove="' + i + '">' + t("remove") + '</button></li>';
       }).join("");
       container.querySelectorAll("[data-remove]").forEach(function (btn) {
         btn.addEventListener("click", function () { tables.splice(Number(btn.dataset.remove), 1); renderList(container); });

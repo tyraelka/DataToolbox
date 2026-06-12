@@ -155,9 +155,11 @@
       input.accept = (options.accept || [".xlsx", ".xls", ".csv", ".tsv", ".json"]).join(",");
       var sheetBox = document.createElement("div");
       sheetBox.className = "field-row hidden";
+      var confirmBox = document.createElement("div");
       container.appendChild(drop);
       container.appendChild(input);
       container.appendChild(sheetBox);
+      container.appendChild(confirmBox);
 
       function handleFiles(fileList) {
         var files = Array.prototype.slice.call(fileList || []);
@@ -165,7 +167,7 @@
         if (options.multiple) {
           parseMany(files, options);
         } else {
-          parseOne(files[0], options, sheetBox);
+          parseOne(files[0], options, sheetBox, confirmBox);
         }
       }
 
@@ -190,15 +192,15 @@
       return { drop: drop, input: input };
     }
 
-    async function parseOne(file, options, sheetBox) {
+    async function parseOne(file, options, sheetBox, confirmBox) {
       try {
         showLoading(t("loading"), 5);
         var parsed = await App.Parser.parseToTable(file);
         if (parsed.workbook) {
-          renderSheetPicker(file, parsed, options, sheetBox);
+          renderSheetPicker(file, parsed, options, sheetBox, confirmBox);
         } else {
           await confirmRows(parsed.rows.length);
-          options.onParsed(parsed);
+          showHeaderConfirm(parsed, options, confirmBox);
         }
       } catch (err) {
         if (options.onError) options.onError(err.message);
@@ -233,7 +235,7 @@
       }
     }
 
-    function renderSheetPicker(file, parsed, options, sheetBox) {
+    function renderSheetPicker(file, parsed, options, sheetBox, confirmBox) {
       sheetBox.classList.remove("hidden");
       sheetBox.innerHTML = '<label>' + t("sheet") + '</label><select></select>';
       var select = sheetBox.querySelector("select");
@@ -249,10 +251,53 @@
           sheetName: select.value
         });
         await confirmRows(table.rows.length);
-        options.onParsed(table);
+        showHeaderConfirm(table, options, confirmBox);
       }
       select.addEventListener("change", loadSheet);
       loadSheet();
+    }
+
+    function showHeaderConfirm(parsed, options, confirmBox) {
+      if (!parsed.raw || !confirmBox) {
+        if (confirmBox) confirmBox.innerHTML = "";
+        options.onParsed(parsed);
+        return;
+      }
+      var grid = parsed.raw.grid;
+      var maxStart = Math.min(Math.max(0, grid.length - 1), 50);
+      confirmBox.innerHTML = '<div class="header-confirm">' +
+        '<p class="muted" data-summary></p>' +
+        '<div class="field-row">' +
+        '<label>' + t("hd_start") + '</label><input type="number" data-start min="0" max="' + maxStart + '" step="1">' +
+        '<label>' + t("hd_rows") + '</label><input type="number" data-rows min="0" max="3" step="1">' +
+        '<button class="btn primary" type="button" data-confirm>' + t("hd_confirm") + '</button>' +
+        '</div><div data-preview></div></div>';
+      var startInput = confirmBox.querySelector("[data-start]");
+      var rowsInput = confirmBox.querySelector("[data-rows]");
+      var summary = confirmBox.querySelector("[data-summary]");
+      var preview = confirmBox.querySelector("[data-preview]");
+      startInput.value = parsed.raw.detect.headerStart;
+      rowsInput.value = parsed.raw.detect.headerRows;
+      var current = parsed;
+      function clampInput(el, max) {
+        var n = Math.floor(Number(el.value));
+        if (isNaN(n)) n = 0;
+        return Math.max(0, Math.min(max, n));
+      }
+      function update() {
+        var start = clampInput(startInput, maxStart);
+        var rows = clampInput(rowsInput, 3);
+        current = App.Parser.rebuild(parsed, start, rows);
+        summary.textContent = t("hd_summary").replace("{skip}", start).replace("{rows}", rows);
+        renderTable(preview, current.headers, current.rows, 8);
+      }
+      startInput.addEventListener("input", update);
+      rowsInput.addEventListener("input", update);
+      confirmBox.querySelector("[data-confirm]").addEventListener("click", function () {
+        confirmBox.innerHTML = "";
+        options.onParsed(current);
+      });
+      update();
     }
 
     async function confirmRows(count) {

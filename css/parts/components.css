@@ -101,6 +101,16 @@
   margin-bottom: var(--space-3);
 }
 
+/* --- header detect confirm panel --- */
+.header-confirm {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+.header-confirm input[type="number"] {
+  width: 80px;
+}
+
 label {
   display: inline-flex;
   align-items: center;

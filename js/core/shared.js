@@ -187,7 +187,12 @@
     pal_scale: "\u6df1\u6dfa\u968e",
     pal_presets: "\u7cbe\u9078\u8272\u76e4",
     pal_copied: "\u5df2\u8907\u88fd",
-    pal_copy_all: "\u8907\u88fd\u5168\u90e8"
+    pal_copy_all: "\u8907\u88fd\u5168\u90e8",
+    hd_start: "\u8d77\u59cb\u5217",
+    hd_rows: "\u8868\u982d\u5217\u6578",
+    hd_confirm: "\u78ba\u8a8d\u4f7f\u7528",
+    hd_summary: "\u5075\u6e2c\u7d50\u679c\uff1a\u8df3\u904e {skip} \u5217\u96dc\u8a0a\uff0c\u8868\u982d {rows} \u5217",
+    hd_badge: "\u8df3\u904e {skip} \u5217\uff0c\u8868\u982d {rows} \u5217"
   };
 
   function t(key) {
