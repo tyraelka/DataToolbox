@@ -192,7 +192,13 @@
     hd_rows: "\u8868\u982d\u5217\u6578",
     hd_confirm: "\u78ba\u8a8d\u4f7f\u7528",
     hd_summary: "\u5075\u6e2c\u7d50\u679c\uff1a\u8df3\u904e {skip} \u5217\u96dc\u8a0a\uff0c\u8868\u982d {rows} \u5217",
-    hd_badge: "\u8df3\u904e {skip} \u5217\uff0c\u8868\u982d {rows} \u5217"
+    hd_badge: "\u8df3\u904e {skip} \u5217\uff0c\u8868\u982d {rows} \u5217",
+    mock_param_int: "\u6700\u5c0f,\u6700\u5927\uff08\u9810\u8a2d 0,100\uff09",
+    mock_param_dec: "\u6700\u5c0f,\u6700\u5927,\u5c0f\u6578\u4f4d\uff08\u9810\u8a2d 0,100,2\uff09",
+    mock_param_date: "\u8d77\u65e5,\u8a16\u65e5\uff08\u9810\u8a2d 2024/01/01,2024/12/31\uff09",
+    mock_param_pick: "\u9078\u98051,\u9078\u98052,\u9078\u98053\uff08\u9017\u865f\u5206\u9694\uff09",
+    mock_param_seq: "\u8d77\u59cb\u503c,\u6b65\u9032\uff08\u9810\u8a2d 1,1\uff09",
+    mock_param_none: "\u6b64\u578b\u5225\u7121\u53c3\u6578"
   };
 
   function t(key) {

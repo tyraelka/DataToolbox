@@ -6,17 +6,35 @@
       addField(container, "\u5e8f\u865f", "sequence");
       addField(container, "\u59d3\u540d", "zhName");
       addField(container, "\u65e5\u671f", "date");
-      container.querySelector("#mock-add").addEventListener("click", function () { addField(container, "\u6b04\u4f4d", "text"); });
+      container.querySelector("#mock-add").addEventListener("click", function () { addField(container, "\u6b04\u4f4d", "pick"); });
       container.querySelector("#mock-run").addEventListener("click", function () { runMock(container); });
     }
     return { init: init, destroy: function () {} };
   })();
 
+  var MOCK_PARAM_HINTS = {
+    integer: "mock_param_int",
+    decimal: "mock_param_dec",
+    date: "mock_param_date",
+    pick: "mock_param_pick",
+    sequence: "mock_param_seq"
+  };
+
   function addField(container, name, type) {
     var row = document.createElement("div");
     row.className = "field-row";
-    row.innerHTML = '<input data-name type="text" value="' + App.UI.escapeHtml(name) + '" placeholder="' + t("field_name") + '"><select data-type><option value="zhName">' + t("type_zh_name") + '</option><option value="enName">' + t("type_en_name") + '</option><option value="email">' + t("type_email") + '</option><option value="mobile">' + t("type_mobile") + '</option><option value="integer">' + t("type_integer") + '</option><option value="decimal">' + t("type_decimal") + '</option><option value="date">' + t("type_date") + '</option><option value="boolean">' + t("type_boolean") + '</option><option value="uuid">' + t("type_uuid") + '</option><option value="pick">' + t("type_pick") + '</option><option value="sequence">' + t("type_sequence") + '</option></select><input data-param type="text" placeholder="' + t("params") + '"><button class="btn small danger" data-remove>' + t("remove") + '</button>';
-    row.querySelector("[data-type]").value = type;
+    row.innerHTML = '<input data-name type="text" value="' + App.UI.escapeHtml(name) + '" placeholder="' + t("field_name") + '"><select data-type><option value="zhName">' + t("type_zh_name") + '</option><option value="enName">' + t("type_en_name") + '</option><option value="email">' + t("type_email") + '</option><option value="mobile">' + t("type_mobile") + '</option><option value="integer">' + t("type_integer") + '</option><option value="decimal">' + t("type_decimal") + '</option><option value="date">' + t("type_date") + '</option><option value="boolean">' + t("type_boolean") + '</option><option value="uuid">' + t("type_uuid") + '</option><option value="pick">' + t("type_pick") + '</option><option value="sequence">' + t("type_sequence") + '</option></select><input data-param type="text"><button class="btn small danger" data-remove>' + t("remove") + '</button>';
+    var select = row.querySelector("[data-type]");
+    select.value = type;
+    function updateParamHint() {
+      var param = row.querySelector("[data-param]");
+      var key = MOCK_PARAM_HINTS[select.value];
+      param.disabled = !key;
+      param.placeholder = key ? t(key) : t("mock_param_none");
+      param.title = param.placeholder;
+    }
+    select.addEventListener("change", updateParamHint);
+    updateParamHint();
     row.querySelector("[data-remove]").addEventListener("click", function () { row.remove(); });
     container.querySelector("#mock-fields").appendChild(row);
   }
