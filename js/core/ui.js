@@ -268,8 +268,8 @@
       confirmBox.innerHTML = '<div class="header-confirm">' +
         '<p class="muted" data-summary></p>' +
         '<div class="field-row">' +
-        '<label>' + t("hd_start") + '</label><input type="number" data-start min="0" max="' + maxStart + '" step="1">' +
-        '<label>' + t("hd_rows") + '</label><input type="number" data-rows min="0" max="3" step="1">' +
+        '<label>' + t("hd_start") + ' <input type="number" data-start min="0" max="' + maxStart + '" step="1"></label>' +
+        '<label>' + t("hd_rows") + ' <input type="number" data-rows min="0" max="3" step="1"></label>' +
         '<button class="btn primary" type="button" data-confirm>' + t("hd_confirm") + '</button>' +
         '</div><div data-preview></div></div>';
       var startInput = confirmBox.querySelector("[data-start]");
