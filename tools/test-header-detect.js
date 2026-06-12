@@ -136,6 +136,25 @@ check("empty leaf under group falls back to group name", function () {
   assert.deepStrictEqual(t.headers, ["ID", "groupA_h1", "groupA"]);
 });
 
+check("build exposes column group paths", function () {
+  var grid = [
+    [null, "groupA", null, "groupB", null],
+    ["ID", "h1", "h2", "h1", "h2"],
+    ["1", "a", "b", "c", "d"]
+  ];
+  var t = HD.build(grid, { headerStart: 0, headerRows: 2 });
+  assert.deepStrictEqual(t.groups, [null, "groupA", "groupA", "groupB", "groupB"]);
+});
+
+check("single-row header has no group paths", function () {
+  var grid = [
+    ["name", "age"],
+    ["amy", "30"]
+  ];
+  var t = HD.build(grid, { headerStart: 0, headerRows: 1 });
+  assert.deepStrictEqual(t.groups, [null, null]);
+});
+
 check("degenerate inputs do not throw", function () {
   assert.deepStrictEqual(HD.analyze([], []), { headerStart: 0, headerRows: 1, confidence: 0 });
   var d = HD.analyze([[null, null], [null, null]], []);

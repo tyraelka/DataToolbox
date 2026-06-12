@@ -135,7 +135,7 @@
       return {
         headers: headers,
         rows: rows,
-        meta: Object.assign({ sourceName: "", sheetName: "", totalRows: rows.length }, meta || {}),
+        meta: Object.assign({ sourceName: "", sheetName: "", totalRows: rows.length, colGroups: built.groups }, meta || {}),
         raw: { grid: grid, merges: merges, detect: detect }
       };
     }

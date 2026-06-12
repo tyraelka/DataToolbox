@@ -166,8 +166,12 @@
         width = Math.max(width, (rows[d] || []).length);
       }
       var names = [];
+      var groups = [];
       if (headerRows === 0) {
-        for (var c = 0; c < width; c++) names.push("Column " + (c + 1));
+        for (var c = 0; c < width; c++) {
+          names.push("Column " + (c + 1));
+          groups.push(null);
+        }
       } else {
         var levels = [];
         for (var h = 0; h < headerRows; h++) {
@@ -183,9 +187,10 @@
             if (value && parts[parts.length - 1] !== value) parts.push(value);
           });
           names.push(parts.length ? parts.join("_") : "Column " + (i + 1));
+          groups.push(parts.length > 1 ? parts.slice(0, parts.length - 1).join("_") : null);
         }
       }
-      return { headers: dedupe(names), rows: rows };
+      return { headers: dedupe(names), rows: rows, groups: groups };
     }
 
     return { analyze: analyze, build: build };

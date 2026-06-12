@@ -9,9 +9,34 @@
       if (App.State.current) { table = cloneTable(App.State.current); update(container); }
     }
     function update(container) {
-      var opts = table.headers.map(function (h) { return '<option value="' + App.UI.escapeHtml(h) + '">' + App.UI.escapeHtml(h) + "</option>"; }).join("");
+      var opts = columnOptions(table);
       container.querySelector("#pivot-groups").innerHTML = opts;
       container.querySelector("#pivot-value").innerHTML = opts;
+    }
+    /* group columns under <optgroup> when the table carries multi-row
+       header info; option values stay the flat composed names */
+    function columnOptions(table) {
+      var esc = App.UI.escapeHtml;
+      var colGroups = table.meta && table.meta.colGroups;
+      var headers = table.headers;
+      var usable = colGroups && colGroups.length === headers.length && colGroups.some(function (g) { return g; });
+      if (!usable) {
+        return headers.map(function (h) { return '<option value="' + esc(h) + '">' + esc(h) + "</option>"; }).join("");
+      }
+      var html = "";
+      var open = null;
+      headers.forEach(function (h, i) {
+        var group = colGroups[i] || null;
+        if (group !== open) {
+          if (open != null) html += "</optgroup>";
+          if (group != null) html += '<optgroup label="' + esc(group) + '">';
+          open = group;
+        }
+        var label = group && h.indexOf(group + "_") === 0 ? h.slice(group.length + 1) : h;
+        html += '<option value="' + esc(h) + '">' + esc(label) + "</option>";
+      });
+      if (open != null) html += "</optgroup>";
+      return html;
     }
     function run(container) {
       if (!table) return App.UI.toast(t("no_data"), "warning");
