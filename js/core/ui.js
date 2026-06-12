@@ -53,7 +53,7 @@
       });
       html += "</tbody></table>";
       if (rows.length > limit) {
-        html += '<p class="muted" style="padding:8px 10px">' + t("first_500") + " / " + rows.length.toLocaleString() + "</p>";
+        html += '<p class="muted" style="padding:8px 10px">' + escapeHtml(t("preview_truncated").replace("{shown}", limit.toLocaleString()).replace("{total}", rows.length.toLocaleString())) + "</p>";
       }
       html += "</div>";
       el.innerHTML = html;

@@ -13,6 +13,7 @@
   })();
 
   var MOCK_PARAM_HINTS = {
+    email: "mock_param_email",
     integer: "mock_param_int",
     decimal: "mock_param_dec",
     date: "mock_param_date",
@@ -58,7 +59,7 @@
     App.UI.hideLoading();
     var result = { headers: fields.map(function (f) { return f.name; }), rows: rows, meta: { sourceName: "mock", totalRows: rows.length } };
     App.State.set(result);
-    App.UI.renderTable(container.querySelector("#mock-output"), result.headers, result.rows, PREVIEW_CAP);
+    App.UI.renderTable(container.querySelector("#mock-output"), result.headers, result.rows, RENDER_CAP);
     sendExportBar(container.querySelector("#mock-output"), function () { return result; });
   }
 
@@ -70,7 +71,13 @@
       return surnames[index % surnames.length] + names[Math.floor(Math.random() * names.length)];
     }
     if (field.type === "enName") return ["Alex Chen", "Mia Lin", "Ryan Wang", "Ivy Lee"][index % 4];
-    if (field.type === "email") return "user" + (index + 1) + "@example.com";
+    if (field.type === "email") {
+      var locals = ["amy", "ben", "cindy", "david", "emma", "frank", "grace", "henry"];
+      var domains = p.split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+      if (!domains.length) domains = ["example.com"];
+      /* random-looking prefix; index suffix keeps every address unique */
+      return locals[Math.floor(Math.random() * locals.length)] + (index + 1) + "@" + domains[Math.floor(Math.random() * domains.length)];
+    }
     if (field.type === "mobile") return "09" + String(10000000 + (index % 90000000));
     if (field.type === "integer") { var ip = nums(p, 0, 100); return String(randInt(ip[0], ip[1])); }
     if (field.type === "decimal") { var dp = nums(p, 0, 100, 2); return (Math.random() * (dp[1] - dp[0]) + dp[0]).toFixed(dp[2]); }
