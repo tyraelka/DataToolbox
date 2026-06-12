@@ -1,0 +1,144 @@
+/* ============================================================
+   Design tokens — "Instrument Workbench" theme.
+   Dark is the default theme on :root.
+   Light theme overrides live under html[data-theme="light"].
+   Never hardcode colors outside this file.
+   ============================================================ */
+
+:root {
+  /* --- surfaces --- */
+  --bg:           #0e100f;
+  --bg-elevated:  #161918;
+  --bg-inset:     #0a0c0b;
+  --bg-hover:     #1e2220;
+  --bg-active:    #262b29;
+
+  /* --- text --- */
+  --text:         #e8ece7;
+  --text-muted:   #95a09a;
+  --text-faint:   #5d6863;
+
+  /* --- lines --- */
+  --border:        #262b28;
+  --border-strong: #3a423d;
+
+  /* --- accent: oscilloscope teal --- */
+  --accent:          #35d0ba;
+  --accent-strong:   #5fe3cf;
+  --accent-contrast: #06201c;
+  --accent-soft:     rgba(53, 208, 186, 0.12);
+
+  /* --- semantic --- */
+  --danger:        #ff7080;
+  --danger-soft:   rgba(255, 112, 128, 0.13);
+  --success:       #54cf8d;
+  --success-soft:  rgba(84, 207, 141, 0.13);
+  --warning:       #f5b73f;
+  --warning-soft:  rgba(245, 183, 63, 0.14);
+
+  /* --- data table / diff --- */
+  --table-stripe:      rgba(255, 255, 255, 0.022);
+  --table-head:        #121514;
+  --highlight-changed: rgba(245, 183, 63, 0.16);
+  --row-added:         rgba(84, 207, 141, 0.11);
+  --row-deleted:       rgba(255, 112, 128, 0.11);
+  --match-bg:          rgba(53, 208, 186, 0.28);
+
+  /* --- chart palette (read by js/core/charts.js) --- */
+  --chart-1: #35d0ba;
+  --chart-2: #f5b73f;
+  --chart-3: #6db5ff;
+  --chart-4: #ff8aa0;
+  --chart-5: #b89aff;
+  --chart-6: #a8d36c;
+  --chart-7: #ff9f5b;
+  --chart-8: #8da3b0;
+
+  /* --- effects --- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55);
+  --shadow-hard: 3px 3px 0 rgba(0, 0, 0, 0.5);
+  --shadow-hard-lg: 5px 5px 0 rgba(0, 0, 0, 0.5);
+  --focus-ring: 0 0 0 3px rgba(53, 208, 186, 0.3);
+  --overlay: rgba(6, 8, 7, 0.7);
+  --grid-dot: rgba(232, 236, 231, 0.05);
+
+  /* --- shape and spacing --- */
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* --- typography --- */
+  --font-ui: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei",
+             "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Cascadia Code", "SF Mono", Consolas,
+               "Courier New", monospace;
+  --fs-xs: 12px;
+  --fs-sm: 13px;
+  --fs-md: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 20px;
+
+  /* --- motion --- */
+  --speed: 0.16s;
+}
+
+html[data-theme="light"] {
+  /* warm drafting paper */
+  --bg:           #f2f0e9;
+  --bg-elevated:  #fbfaf6;
+  --bg-inset:     #eae7de;
+  --bg-hover:     #eeebe2;
+  --bg-active:    #e3dfd3;
+
+  --text:         #20251f;
+  --text-muted:   #65705f;
+  --text-faint:   #98a08f;
+
+  --border:        #dcd8ca;
+  --border-strong: #c2bdab;
+
+  --accent:          #0d8a78;
+  --accent-strong:   #0a6e60;
+  --accent-contrast: #f6fffd;
+  --accent-soft:     rgba(13, 138, 120, 0.10);
+
+  --danger:        #cc4054;
+  --danger-soft:   rgba(204, 64, 84, 0.10);
+  --success:       #258a55;
+  --success-soft:  rgba(37, 138, 85, 0.12);
+  --warning:       #a3700e;
+  --warning-soft:  rgba(163, 112, 14, 0.14);
+
+  --table-stripe:      rgba(40, 50, 30, 0.03);
+  --table-head:        #f1efe7;
+  --highlight-changed: rgba(163, 112, 14, 0.15);
+  --row-added:         rgba(37, 138, 85, 0.11);
+  --row-deleted:       rgba(204, 64, 84, 0.09);
+  --match-bg:          rgba(13, 138, 120, 0.22);
+
+  --chart-1: #0d8a78;
+  --chart-2: #c08a14;
+  --chart-3: #2e6fc2;
+  --chart-4: #c25a72;
+  --chart-5: #7a5fc0;
+  --chart-6: #6d9032;
+  --chart-7: #c2702e;
+  --chart-8: #6e8290;
+
+  --shadow-sm: 0 1px 2px rgba(45, 50, 40, 0.08);
+  --shadow-md: 0 6px 20px rgba(45, 50, 40, 0.10);
+  --shadow-lg: 0 16px 48px rgba(45, 50, 40, 0.16);
+  --shadow-hard: 3px 3px 0 rgba(32, 37, 31, 0.14);
+  --shadow-hard-lg: 5px 5px 0 rgba(32, 37, 31, 0.14);
+  --focus-ring: 0 0 0 3px rgba(13, 138, 120, 0.25);
+  --overlay: rgba(242, 240, 233, 0.75);
+  --grid-dot: rgba(32, 37, 31, 0.07);
+}

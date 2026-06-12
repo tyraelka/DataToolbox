@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>&#36039;&#26009;&#24037;&#20855;&#31665;</title>
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("toolbox-theme");
+        var theme = stored || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+      } catch (err) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-row">
+      <div>
+        <h1 id="app-title">&#36039;&#26009;&#24037;&#20855;&#31665;</h1>
+        <p id="app-subtitle" class="subtitle"></p>
+      </div>
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="theme"></button>
+    </div>
+    <nav id="app-nav" class="nav-groups" aria-label="Navigation"></nav>
+  </header>
+
+  <main id="app-main"></main>
+
+  <div id="loading-overlay" class="hidden" role="status" aria-live="polite">
+    <div class="loading-card">
+      <div class="spinner"></div>
+      <p id="loading-text">&#34389;&#29702;&#20013;</p>
+      <div class="progress-track"><div id="loading-progress" class="progress-fill"></div></div>
+    </div>
+  </div>
+  <div id="toast-container" aria-live="polite"></div>
+
+  <script src="vendor/xlsx.full.min.js"></script>
+  <script src="vendor/chart.umd.min.js"></script>
+  <script src="js/core/shared.js"></script>
+  <script src="js/core/ui.js"></script>
+  <script src="js/core/parser.js"></script>
+  <script src="js/core/regex-util.js"></script>
+  <script src="js/core/charts.js"></script>
+  <script src="js/core/router.js"></script>
+  <script src="js/modules/health-diff.js"></script>
+  <script src="js/modules/cleaner.js"></script>
+  <script src="js/modules/column-tool.js"></script>
+  <script src="js/modules/merger.js"></script>
+  <script src="js/modules/pivot.js"></script>
+  <script src="js/modules/converter.js"></script>
+  <script src="js/modules/regex-tester.js"></script>
+  <script src="js/modules/json-viewer.js"></script>
+  <script src="js/modules/mock-gen.js"></script>
+  <script src="js/modules/text-formatter.js"></script>
+  <script src="js/modules/color-palette.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
